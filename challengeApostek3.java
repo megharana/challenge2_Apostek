@@ -13,37 +13,53 @@ class challengeApostek3{
 		for(int i=0;i<noOfChairs;i++){
 			chair[i] = -1;
 		}
-		chair[2]=1;
-		chair[0]=2;
-		// System.out.println("Enter no.of person");
-		// int noOfPerson = s1.nextInt();
-		// char preferences[] = new char[noOfPerson];
-		// System.out.println("Enter the preferences person wise from 1-"+noOfPerson);
-		// int noOfPerson = s1.nextChar();
-		//int tempIndexes[] = new int[noOfChairs];
-		List<Integer> maxVacantIndex = new ArrayList<Integer>();
-		maxVacantIndex = ca.getVacantSequence(chair,noOfChairs);	
-		System.out.println("startIndex = "+((maxVacantIndex.get(1)+1)-maxVacantIndex.get(0))+", endIndex = " + maxVacantIndex.get(1) +", Count = " + maxVacantIndex.get(0)); //printing the starting index and last index of maximum continuous vacant sequence of chairs
-		int maxVacantCount = maxVacantIndex.get(0);
-
-		//checking whether the maximum vacant sequence is odd/even.
-		if(maxVacantCount%2==0){
-			if(maxVacantCount==2){
-				//check the preference
-			}
-			else if(maxVacantCount>2){
-				//divide the count, get quotient and based preference left=(startIndex+quotient-1)  or if right = (startIndex+quotient)
-			}
-		}
-		else{
-			if(maxVacantCount==1){
-				//
-			}
-			else if(maxVacantCount>1){
-				
-			}
-		}
 		
+		System.out.println("Enter no.of person");
+		int noOfPerson = s1.nextInt();
+		char preferences[] = new char[noOfPerson];
+		System.out.println("Enter the preferences person wise from 1-"+noOfPerson);
+		
+		for(int i=0;i<noOfPerson;i++){
+			 preferences[i] = s1.next().charAt(0);
+		}
+
+		List<Integer> maxVacantIndex = new ArrayList<Integer>();
+		for(int j=0;j<noOfPerson;j++){			
+			maxVacantIndex = ca.getVacantSequence(chair,noOfChairs);	
+			System.out.println("startIndex = "+((maxVacantIndex.get(1)+1)-maxVacantIndex.get(0))+", endIndex = " + maxVacantIndex.get(1) +", Count = " + maxVacantIndex.get(0)); //printing the starting index and last index of maximum continuous vacant sequence of chairs
+			int maxVacantCount = maxVacantIndex.get(0);
+			int startIndex = ((maxVacantIndex.get(1)+1)-maxVacantIndex.get(0));
+			int endIndex = maxVacantIndex.get(1);
+			//checking whether the maximum vacant sequence is odd/even.
+			if(maxVacantCount%2==0){
+				if(maxVacantCount==2){
+					if(preferences[j]=='L')
+						chair[startIndex] = j+1;
+					else
+						chair[endIndex] = j+1;
+				}
+				else if(maxVacantCount>2){
+					//divide the count, get quotient and based preference left=(startIndex+quotient-1)  or if right = (startIndex+quotient)
+					int quotient=maxVacantCount/2;
+					if(preferences[j]=='L')
+						chair[startIndex+quotient-1] = j+1;
+					else
+						chair[startIndex+quotient] = j+1;			
+				}
+			}
+			else{
+				if(maxVacantCount == 1){
+					chair[endIndex] = j+1;
+				}
+				else if(maxVacantCount>1){
+					int quotient=maxVacantCount/2;
+					chair[quotient+startIndex]=j+1;
+				}
+			}
+		}
+		for(int i=0;i<noOfChairs;i++){
+			System.out.println(chair[i]);
+		}
 	}
 	public List<Integer> getVacantSequence(int chair[],int noOfChairs){
 		List<Integer> tempIndexes = new ArrayList<Integer>();
